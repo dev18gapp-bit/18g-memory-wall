@@ -7,9 +7,17 @@ const MAX_MESSAGE_LENGTH = 500;
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
+// Local datetime-local inputs need "YYYY-MM-DDTHH:mm" with no timezone offset.
+function nowForDateTimeLocal(): string {
+  const d = new Date(Date.now() - new Date().getTimezoneOffset() * 60_000);
+  return d.toISOString().slice(0, 16);
+}
+
 export default function SubmitPage() {
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
+  const [displayStart, setDisplayStart] = useState(nowForDateTimeLocal);
+  const [displayHours, setDisplayHours] = useState(24);
   const [status, setStatus] = useState<Status>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -22,7 +30,12 @@ export default function SubmitPage() {
       const res = await fetch(`${API_URL}/wall-messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, message }),
+        body: JSON.stringify({
+          name,
+          message,
+          displayStart: new Date(displayStart).toISOString(),
+          displayHours,
+        }),
       });
       const data = await res.json();
 
@@ -77,6 +90,35 @@ export default function SubmitPage() {
                 {message.length} / {MAX_MESSAGE_LENGTH}
               </span>
             </label>
+
+            <div style={styles.fieldRow}>
+              <label style={styles.field}>
+                <span style={styles.fieldLabel}>Start Date</span>
+                <input
+                  type="datetime-local"
+                  style={styles.input}
+                  required
+                  value={displayStart}
+                  onChange={(e) => setDisplayStart(e.target.value)}
+                />
+              </label>
+
+              <label style={styles.field}>
+                <span style={styles.fieldLabel}>Display For (Hours)</span>
+                <input
+                  type="number"
+                  style={styles.input}
+                  required
+                  min={1}
+                  max={24}
+                  value={displayHours}
+                  onChange={(e) => setDisplayHours(Number(e.target.value))}
+                />
+              </label>
+            </div>
+            <p style={styles.hint}>
+              Your message will show on the wall starting at this date/time, for up to 24 hours.
+            </p>
 
             {status === 'error' && <p style={styles.errorText}>{errorMessage}</p>}
 
@@ -144,6 +186,19 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column' as const,
     gap: 8,
     position: 'relative' as const,
+    flex: '1 1 160px',
+  },
+  fieldRow: {
+    display: 'flex',
+    flexWrap: 'wrap' as const,
+    gap: 20,
+  },
+  hint: {
+    marginTop: -8,
+    color: 'rgba(245,236,215,0.4)',
+    fontFamily: 'var(--font-raleway)',
+    fontSize: 12,
+    lineHeight: 1.6,
   },
   fieldLabel: {
     color: 'rgba(245,236,215,0.55)',

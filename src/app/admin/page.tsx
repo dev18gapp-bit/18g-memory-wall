@@ -10,6 +10,8 @@ interface WallMessage {
   message: string;
   status: string;
   created_at: string;
+  display_start: string;
+  display_hours: number;
 }
 
 type Filter = 'pending' | 'approved' | 'rejected';
@@ -117,7 +119,10 @@ export default function AdminPage() {
             <div key={m.id} style={styles.card}>
               <p style={styles.message}>&ldquo;{m.message}&rdquo;</p>
               <p style={styles.meta}>
-                {m.name || 'Anonymous'} · {new Date(m.created_at).toLocaleString()}
+                {m.name || 'Anonymous'} · submitted {new Date(m.created_at).toLocaleString()}
+              </p>
+              <p style={styles.meta}>
+                Displays {new Date(m.display_start).toLocaleString()} for {m.display_hours}h
               </p>
 
               {filter === 'pending' && (
