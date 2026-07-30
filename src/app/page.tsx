@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from 'react';
 import { API_URL } from '@/lib/api';
+import SiteHeader from '@/components/site-header';
 
 const MAX_MESSAGE_LENGTH = 500;
 
@@ -51,10 +52,10 @@ export default function SubmitPage() {
   }
 
   return (
-    <main style={styles.page}>
+    <>
+      <SiteHeader />
+      <main style={styles.page}>
       <div style={styles.content}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/logo.jpg" alt="18g Coffee & Roastery" style={styles.logo} />
         <p style={styles.label}>THE MEMORY WALL</p>
         <div style={styles.divider} />
 
@@ -129,7 +130,8 @@ export default function SubmitPage() {
           </form>
         )}
       </div>
-    </main>
+      </main>
+    </>
   );
 }
 
@@ -139,17 +141,11 @@ const styles: Record<string, React.CSSProperties> = {
     backgroundColor: '#100C08',
     display: 'flex',
     justifyContent: 'center',
-    padding: '64px 20px',
+    padding: 'clamp(180px, 24vh, 260px) 20px 64px',
   },
   content: {
     width: '100%',
     maxWidth: 480,
-  },
-  logo: {
-    height: 64,
-    width: 64,
-    borderRadius: 10,
-    marginBottom: 20,
   },
   label: {
     color: '#F5ECD7',

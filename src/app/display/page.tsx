@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { API_URL } from '@/lib/api';
+import SiteHeader from '@/components/site-header';
 
 const POLL_INTERVAL_MS = 20_000;
 const CYCLE_INTERVAL_MS = 8_000;
@@ -73,31 +74,32 @@ export default function DisplayPage() {
   const current = messages[index];
 
   return (
-    <main style={styles.page}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/images/logo.jpg" alt="18g Coffee & Roastery" style={styles.logo} />
-      <p style={styles.label}>THE MEMORY WALL</p>
-      <div style={styles.divider} />
+    <>
+      <SiteHeader />
+      <main style={styles.page}>
+        <p style={styles.label}>THE MEMORY WALL</p>
+        <div style={styles.divider} />
 
-      <div style={styles.stage}>
-        {current ? (
-          <div key={current.id} style={styles.messageBlock}>
-            <p style={styles.messageText}>&ldquo;{current.message}&rdquo;</p>
-            {current.name && <p style={styles.messageName}>— {current.name}</p>}
-          </div>
-        ) : (
-          <p style={styles.emptyText}>Be the first to leave a message on the wall.</p>
-        )}
-      </div>
+        <div style={styles.stage}>
+          {current ? (
+            <div key={current.id} style={styles.messageBlock}>
+              <p style={styles.messageText}>&ldquo;{current.message}&rdquo;</p>
+              {current.name && <p style={styles.messageName}>— {current.name}</p>}
+            </div>
+          ) : (
+            <p style={styles.emptyText}>Be the first to leave a message on the wall.</p>
+          )}
+        </div>
 
-      <div style={styles.qrCorner}>
-        {qrDataUrl && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={qrDataUrl} alt={`Scan to leave a message at ${submitUrl}`} style={styles.qrImage} />
-        )}
-        <p style={styles.qrCaption}>Scan to leave a message</p>
-      </div>
-    </main>
+        <div style={styles.qrCorner}>
+          {qrDataUrl && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={qrDataUrl} alt={`Scan to leave a message at ${submitUrl}`} style={styles.qrImage} />
+          )}
+          <p style={styles.qrCaption}>Scan to leave a message</p>
+        </div>
+      </main>
+    </>
   );
 }
 
@@ -114,18 +116,9 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '60px 80px',
     overflow: 'hidden',
   },
-  logo: {
-    position: 'absolute' as const,
-    top: 40,
-    left: '50%',
-    transform: 'translateX(-50%)',
-    height: 72,
-    width: 72,
-    borderRadius: 10,
-  },
   label: {
     position: 'absolute' as const,
-    top: 132,
+    top: 172,
     color: 'rgba(245,236,215,0.5)',
     fontSize: 13,
     fontFamily: 'var(--font-raleway)',
@@ -134,7 +127,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   divider: {
     position: 'absolute' as const,
-    top: 172,
+    top: 212,
     width: 60,
     height: 1,
     backgroundColor: '#C9A84C',
