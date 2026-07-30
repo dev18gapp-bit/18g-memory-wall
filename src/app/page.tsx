@@ -53,7 +53,8 @@ export default function SubmitPage() {
   return (
     <main style={styles.page}>
       <div style={styles.content}>
-        <p style={styles.brand}>18g</p>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/images/logo.jpg" alt="18g Coffee & Roastery" style={styles.logo} />
         <p style={styles.label}>THE MEMORY WALL</p>
         <div style={styles.divider} />
 
@@ -144,12 +145,11 @@ const styles: Record<string, React.CSSProperties> = {
     width: '100%',
     maxWidth: 480,
   },
-  brand: {
-    color: '#C9A84C',
-    fontFamily: 'var(--font-playfair)',
-    fontSize: 22,
-    fontWeight: 400,
-    marginBottom: 16,
+  logo: {
+    height: 64,
+    width: 64,
+    borderRadius: 10,
+    marginBottom: 20,
   },
   label: {
     color: '#F5ECD7',

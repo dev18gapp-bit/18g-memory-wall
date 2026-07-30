@@ -74,6 +74,8 @@ export default function DisplayPage() {
 
   return (
     <main style={styles.page}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/images/logo.jpg" alt="18g Coffee & Roastery" style={styles.logo} />
       <p style={styles.label}>THE MEMORY WALL</p>
       <div style={styles.divider} />
 
@@ -112,9 +114,18 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '60px 80px',
     overflow: 'hidden',
   },
+  logo: {
+    position: 'absolute' as const,
+    top: 40,
+    left: '50%',
+    transform: 'translateX(-50%)',
+    height: 72,
+    width: 72,
+    borderRadius: 10,
+  },
   label: {
     position: 'absolute' as const,
-    top: 48,
+    top: 132,
     color: 'rgba(245,236,215,0.5)',
     fontSize: 13,
     fontFamily: 'var(--font-raleway)',
@@ -123,7 +134,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   divider: {
     position: 'absolute' as const,
-    top: 88,
+    top: 172,
     width: 60,
     height: 1,
     backgroundColor: '#C9A84C',
