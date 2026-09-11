@@ -117,13 +117,11 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     flexDirection: 'column' as const,
     alignItems: 'center',
-    justifyContent: 'center',
     padding: '60px 80px',
     overflow: 'hidden',
   },
   label: {
-    position: 'absolute' as const,
-    top: 172,
+    marginTop: 112, // clears the fixed site-header logo above it
     color: 'rgba(245,236,215,0.5)',
     fontSize: 13,
     fontFamily: 'var(--font-raleway)',
@@ -131,20 +129,23 @@ const styles: Record<string, React.CSSProperties> = {
     letterSpacing: '8px',
   },
   divider: {
-    position: 'absolute' as const,
-    top: 212,
+    marginTop: 20,
     width: 60,
     height: 1,
     backgroundColor: '#C9A84C',
     opacity: 0.6,
   },
+  // flex: 1 fills whatever space is left below the header, and centers the
+  // message block within *that* space — so a tall block (photo + text)
+  // grows toward the fixed header's fixed position, unlike the old
+  // full-page vertical centering.
   stage: {
+    flex: 1,
     width: '100%',
     maxWidth: 1400,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: '40vh',
     textAlign: 'center' as const,
   },
   messageBlock: {
