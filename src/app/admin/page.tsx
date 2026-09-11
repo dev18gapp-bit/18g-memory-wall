@@ -8,6 +8,7 @@ interface WallMessage {
   id: string;
   name: string | null;
   message: string;
+  image_url: string | null;
   status: string;
   created_at: string;
   display_start: string;
@@ -117,6 +118,10 @@ export default function AdminPage() {
         <div style={styles.list}>
           {messages.map((m) => (
             <div key={m.id} style={styles.card}>
+              {m.image_url && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={m.image_url} alt="" style={styles.cardPhoto} />
+              )}
               <p style={styles.message}>&ldquo;{m.message}&rdquo;</p>
               <p style={styles.meta}>
                 {m.name || 'Anonymous'} · submitted {new Date(m.created_at).toLocaleString()}
@@ -228,6 +233,16 @@ const styles: Record<string, React.CSSProperties> = {
     border: '1px solid rgba(245,236,215,0.12)',
     borderRadius: 8,
     padding: '20px 24px',
+  },
+  cardPhoto: {
+    display: 'block',
+    maxWidth: 220,
+    maxHeight: 160,
+    width: 'auto',
+    height: 'auto',
+    objectFit: 'cover' as const,
+    borderRadius: 6,
+    marginBottom: 14,
   },
   message: {
     color: '#F5ECD7',

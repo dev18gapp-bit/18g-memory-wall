@@ -11,6 +11,7 @@ interface WallMessage {
   id: string;
   name: string | null;
   message: string;
+  image_url: string | null;
   created_at: string;
 }
 
@@ -83,6 +84,10 @@ export default function DisplayPage() {
         <div style={styles.stage}>
           {current ? (
             <div key={current.id} style={styles.messageBlock}>
+              {current.image_url && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={current.image_url} alt="" style={styles.messagePhoto} />
+              )}
               <p style={styles.messageText}>&ldquo;{current.message}&rdquo;</p>
               {current.name && <p style={styles.messageName}>— {current.name}</p>}
             </div>
@@ -144,6 +149,17 @@ const styles: Record<string, React.CSSProperties> = {
   },
   messageBlock: {
     animation: 'fadeIn 0.8s ease',
+  },
+  messagePhoto: {
+    display: 'block',
+    maxWidth: 'min(70vw, 520px)',
+    maxHeight: '38vh',
+    width: 'auto',
+    height: 'auto',
+    objectFit: 'contain' as const,
+    borderRadius: 10,
+    margin: '0 auto 32px',
+    boxShadow: '0 12px 40px rgba(0,0,0,0.45)',
   },
   messageText: {
     color: '#F5ECD7',
