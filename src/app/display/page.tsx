@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { API_URL } from '@/lib/api';
+import { matchWallIllustration } from '@/lib/wall-illustrations';
 import SiteHeader from '@/components/site-header';
 
 const POLL_INTERVAL_MS = 20_000;
@@ -73,6 +74,8 @@ export default function DisplayPage() {
   }, [messagesLength, index]);
 
   const current = messages[index];
+  // Only fall back to a curated illustration when nobody attached a real photo.
+  const illustrationSrc = current && !current.image_url ? matchWallIllustration(current.message) : null;
 
   return (
     <>
@@ -84,9 +87,14 @@ export default function DisplayPage() {
         <div style={styles.stage}>
           {current ? (
             <div key={current.id} style={styles.messageBlock}>
-              {current.image_url && (
+              {current.image_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={current.image_url} alt="" style={styles.messagePhoto} />
+              ) : (
+                illustrationSrc && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={illustrationSrc} alt="" style={styles.messageIllustration} />
+                )
               )}
               <p style={styles.messageText}>&ldquo;{current.message}&rdquo;</p>
               {current.name && <p style={styles.messageName}>— {current.name}</p>}
@@ -150,6 +158,13 @@ const styles: Record<string, React.CSSProperties> = {
   },
   messageBlock: {
     animation: 'fadeIn 0.8s ease',
+  },
+  messageIllustration: {
+    display: 'block',
+    width: 96,
+    height: 96,
+    margin: '0 auto 28px',
+    opacity: 0.92,
   },
   messagePhoto: {
     display: 'block',

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { API_URL } from '@/lib/api';
+import { matchWallIllustration } from '@/lib/wall-illustrations';
 
 interface WallMessage {
   id: string;
@@ -116,11 +117,19 @@ export default function AdminPage() {
         <p style={styles.emptyText}>Nothing here.</p>
       ) : (
         <div style={styles.list}>
-          {messages.map((m) => (
+          {messages.map((m) => {
+            // Only fall back to a curated illustration when there's no real photo.
+            const illustrationSrc = m.image_url ? null : matchWallIllustration(m.message);
+            return (
             <div key={m.id} style={styles.card}>
-              {m.image_url && (
+              {m.image_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={m.image_url} alt="" style={styles.cardPhoto} />
+              ) : (
+                illustrationSrc && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={illustrationSrc} alt="" style={styles.cardIllustration} />
+                )
               )}
               <p style={styles.message}>&ldquo;{m.message}&rdquo;</p>
               <p style={styles.meta}>
@@ -149,7 +158,8 @@ export default function AdminPage() {
                 </div>
               )}
             </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </main>
@@ -243,6 +253,13 @@ const styles: Record<string, React.CSSProperties> = {
     objectFit: 'cover' as const,
     borderRadius: 6,
     marginBottom: 14,
+  },
+  cardIllustration: {
+    display: 'block',
+    width: 48,
+    height: 48,
+    marginBottom: 14,
+    opacity: 0.9,
   },
   message: {
     color: '#F5ECD7',
